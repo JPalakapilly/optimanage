@@ -21,7 +21,7 @@ class dispatcher(ABC):
     @abstractmethod
     def update_dataset(self):
         """
-        Update
+        Check if dataset has changed and update as needed. 
         """
         pass
 
