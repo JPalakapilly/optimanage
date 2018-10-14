@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
-class model(ABC):
+
+class Model(ABC):
     """
     Abstract class for a ML model.
     """
@@ -16,5 +17,12 @@ class model(ABC):
     def predict(self, input):
         """
         Uses trained model to predict response for an input.
+        """
+        pass
+
+    @abstractmethod
+    def validation(self):
+        """
+        Returns some measure of the accuracy of a trained model.
         """
         pass

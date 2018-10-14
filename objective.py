@@ -1,6 +1,17 @@
 from abc import ABC, abstractmethod
 
-class objective(ABC):
+
+class Objective(ABC):
+    """
+    Abstract class for an objective for an optimization loop.
+    """
+
+    def __init__(self, model, wflows):
+        """
+        Creates a model.
+        """
+        self.model = model
+        self.wflows = wflows
 
     @property
     @abstractmethod
@@ -13,7 +24,10 @@ class objective(ABC):
     @abstractmethod
     def store_model(self, store):
         """
-        Serializes the model and stores somewhere
+        Serializes the model and stores in external store
+
+        Args:
+            store (Store): Location to store the model
         """
         pass
 
@@ -21,6 +35,8 @@ class objective(ABC):
     def load_model(self, store):
         """
         Loads model from external store.
+        Args:
+            store (Store): Location to load the model from
         """
         pass
 
@@ -28,12 +44,21 @@ class objective(ABC):
     def train_model(self, training_data):
         """
         Trains model given a set of training_data.
+        Args:
+            training_data (set(materials?)): Data used to train the model
         """
         pass
 
     @abstractmethod
-    def return_scores(self, design_space):
+    def return_scores(self, candidates):
         """
-        Returns a score for every material in the design_space
+        Returns a score for every material in the design_space.
+        Stores this somewhere?
+
+        Args:
+            candidates (set(strings)): MP-ids for materials to score
+
+        Returns:
+            scores (dict(Workflow:float)): mapping from workflow to score
         """
         pass
