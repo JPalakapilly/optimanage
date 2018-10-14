@@ -7,6 +7,13 @@ class Model(ABC):
     """
 
     @abstractmethod
+    def __init__(self):
+        """
+        Creates a model.
+        """
+        pass
+
+    @abstractmethod
     def train(self, training_data):
         """
         Trains the model with input training data set.

@@ -8,7 +8,7 @@ class Objective(ABC):
 
     def __init__(self, model, wflows):
         """
-        Creates a model.
+        Creates an objective.
         """
         self.model = model
         self.wflows = wflows
@@ -45,7 +45,8 @@ class Objective(ABC):
         """
         Trains model given a set of training_data.
         Args:
-            training_data (set(materials?)): Data used to train the model
+            training_data (set(mp-ids)): MP-ids for the materials used to train
+                                         the model
         """
         pass
 

@@ -47,7 +47,7 @@ class Dispatcher(ABC):
     @abstractmethod
     def run_objective(objective, candidates):
         """
-        Uses an objective get 'scores' for candidates.
+        Uses an objective to get 'scores' for candidates.
         Args:
             objective (Objective): The objective used to generate scores
             candidates (list): The materials that are to be scored
