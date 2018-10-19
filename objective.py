@@ -45,7 +45,7 @@ class Objective(ABC):
         """
         Trains model given a set of training_data.
         Args:
-            training_data (set(mp-ids)): MP-ids for the materials used to train
+            training_data (set(string)): MP-ids for the materials used to train
                                          the model
         """
         pass
@@ -57,7 +57,7 @@ class Objective(ABC):
         Stores this somewhere?
 
         Args:
-            candidates (set(strings)): MP-ids for materials to score
+            candidates (set(string)): MP-ids for materials to score
 
         Returns:
             scores (dict(Workflow:float)): mapping from workflow to score

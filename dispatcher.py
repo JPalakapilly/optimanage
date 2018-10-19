@@ -11,7 +11,7 @@ class Dispatcher(ABC):
         pass
 
     @abstractmethod
-    def update_objective(objective, weight):
+    def add_objective(self, objective, weight):
         """
         Adds an objective to the dispatcher with an associated weight.
         If the objective is already in the dispatcher, update its weight.
@@ -23,14 +23,14 @@ class Dispatcher(ABC):
         pass
 
     @abstractmethod
-    def get_dataset_updates(self):
+    def update(self):
         """
         Check if dataset has changed and update as needed.
         """
         pass
 
     @abstractmethod
-    def partition_data(objective):
+    def partition_data(self, objective):
         """
         Partition the dataset into a training set and a candidate set
         for a given objective based on needed workflows.
@@ -40,12 +40,12 @@ class Dispatcher(ABC):
 
         Returns:
             (training_set, candidate_set) (list(string),list(string)):
-                    Two sets of mp_ids
+                    A tuple containing two sets of mp_ids
         """
         pass
 
     @abstractmethod
-    def run_objective(objective, candidates):
+    def run_objective(self, objective, candidates):
         """
         Uses an objective to get 'scores' for candidates.
         Args:
@@ -59,10 +59,12 @@ class Dispatcher(ABC):
         pass
 
     @abstractmethod
-    def rank_wflows(n):
+    def rank_wflows(self, n):
         """
         Get a ranking of workflows given the current objectives and weights
         Args:
             n (int): The number of workflows to be returned in the ranking
+        Returns:
+            ranking (list(Workflow)): The top n workflows in the ranking.
         """
         pass
