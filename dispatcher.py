@@ -4,9 +4,17 @@ from abc import abstractmethod, ABC
 class Dispatcher(ABC):
 
     @abstractmethod
-    def __init__(self):
+    def __init__(self, dataset=None):
         """
         Creates a new dispatcher.
+        """
+        self.dataset = dataset
+
+    @property
+    @abstractmethod
+    def dataset(self):
+        """
+        The dataset that this dispatcher interacts with. Typically a database.
         """
         pass
 
