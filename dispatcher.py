@@ -12,6 +12,15 @@ class Dispatcher(ABC):
 
     @property
     @abstractmethod
+    def objective_training_data(self):
+        """
+        Mapping from objective to hash/serialization of the training data
+        that was last used to train the objective's models.
+        """
+        pass
+
+    @property
+    @abstractmethod
     def dataset(self):
         """
         The dataset that this dispatcher interacts with. Typically a database.
@@ -47,7 +56,7 @@ class Dispatcher(ABC):
                                    used to partition the dataset
 
         Returns:
-            (training_set, candidate_set) (list(string),list(string)):
+            (training_set, candidate_set) (List[string],List[string]):
                     A tuple containing two sets of mp_ids
         """
         pass
@@ -58,10 +67,10 @@ class Dispatcher(ABC):
         Uses an objective to get 'scores' for candidates.
         Args:
             objective (Objective): The objective used to generate scores
-            candidates (list): The materials that are to be scored
+            candidates (List): The materials that are to be scored
 
         Returns:
-            scores (dict): Mapping of workflows to
+            scores (Dict): Mapping of workflows to
                            scores for the input objective
         """
         pass
@@ -73,6 +82,6 @@ class Dispatcher(ABC):
         Args:
             n (int): The number of workflows to be returned in the ranking
         Returns:
-            ranking (list(Workflow)): The top n workflows in the ranking.
+            ranking (List(Workflow)): The top n workflows in the ranking.
         """
         pass

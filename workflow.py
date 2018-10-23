@@ -13,8 +13,11 @@ class Workflow(ABC):
     @abstractmethod
     def dependencies(cls):
         """
-        Returns the workflow dependencies (other workflow types)
+        Returns the workflow dependencies (other workflow classes)
         of this workflow
+
+        Returns:
+            dependencies (Set[Workflow])
         """
         pass
 

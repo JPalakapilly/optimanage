@@ -41,25 +41,15 @@ class Objective(ABC):
         pass
 
     @abstractmethod
-    def train_model(self, training_data):
-        """
-        Trains model given a set of training_data.
-        Args:
-            training_data (set(string)): MP-ids for the materials used to train
-                                         the model
-        """
-        pass
-
-    @abstractmethod
     def return_scores(self, candidates):
         """
         Returns a score for every material in the design_space.
         Stores this somewhere?
 
         Args:
-            candidates (set(string)): MP-ids for materials to score
+            candidates (Set[string]): MP-ids for materials to score
 
         Returns:
-            scores (dict(Workflow:float)): mapping from workflow to score
+            scores (Dict[string:float]): mapping from MP-ids to scores
         """
         pass

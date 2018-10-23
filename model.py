@@ -19,7 +19,7 @@ class Model(ABC):
         Trains the model with input training data set.
 
         Args:
-            training_data (list): list of inputs to train the model
+            training_data (List): list of inputs to train the model
         """
         pass
 
@@ -29,14 +29,14 @@ class Model(ABC):
         Uses trained model to predict response for an input.
 
         Args:
-            input (material?): the input whose response needs to be predicted
+            input: the input whose response needs to be predicted
         Returns:
-            response (float?): the predicted response of the model for input
+            response: the predicted response of the model for input
         """
         pass
 
     @abstractmethod
-    def validation(self):
+    def validate(self):
         """
         Returns some measure of the accuracy of a trained model.
 
