@@ -26,12 +26,29 @@ class Workflow(ABC):
         Args:
             mp_id (string): mp_id of the material for this workflow instance
         """
-        self.mp_id = mp_id
+        self._mp_id = mp_id
 
     @property
-    @abstractmethod
     def mp_id(self):
         """
         The mp_id that this workflow corresponds to.
-        """"
-        pass
+        """
+        return self._mp_id
+
+
+class ElasticTensorWorkflow(Workflow):
+    """
+    Class for an elastic tensor computation workflow.
+    """
+
+    def __init__(self, mp_id):
+        self._mp_id = mp_id
+        self._mpquery_properties = set("elasticity.elastic_tensor")
+
+    @classmethod
+    def dependencies(cls):
+        return None
+
+    @property
+    def mpquery_properties(self):
+        return self._mpquery_properties

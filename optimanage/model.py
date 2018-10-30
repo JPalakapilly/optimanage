@@ -44,3 +44,9 @@ class Model(ABC):
             accuracy (float): some measure of the predictivity of the model
         """
         pass
+
+
+class RandomForestModel(Model):
+    """
+
+    """

@@ -10,8 +10,8 @@ class Objective(ABC):
         """
         Creates an objective.
         """
-        self.model = model
-        self.wflows = wflows
+        self._model = model
+        self._wflows = wflows
 
     @property
     @abstractmethod
@@ -19,7 +19,7 @@ class Objective(ABC):
         """
         Returns a set of workflow types that are needed for this objective
         """
-        pass
+        return self._wflows
 
     @abstractmethod
     def store_model(self, store):
@@ -53,3 +53,25 @@ class Objective(ABC):
             scores (Dict[string:float]): mapping from MP-ids to scores
         """
         pass
+
+
+class NegativePoissonObjective(Objective):
+    """
+    Toy example of objective looking for materials with negative poisson ratios
+    """
+
+    def __init__(self, model=None, wflows=None):
+        self._model = model
+        self._wflows = wflows
+
+    def model_training_property_names(self):
+        return set("pretty_formula")
+
+    def model_response_property_names(self):
+        return set("elasticity.elastic_tensor")
+
+    def property_names(self):
+        prop_names = set()
+        for wflow in self._wflows:
+            prop_names += wflow.mpquery_properties()
+        return prop_names
