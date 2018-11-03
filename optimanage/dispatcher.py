@@ -112,20 +112,22 @@ class MPDispatcher(Dispatcher):
             self.partition_data(objective)
 
     def partition_data(objective):
-        training_input_props = list(objective.model_training_property_names())
-        response_props = list(objective.model_response_property_names())
+        model_inputs = objective.model_input_property_names()
+        model_outputs = objective.model_response_property_names()
+        all_props = model_inputs + model_outputs
+
         training_criteria = {}
         candidate_critera = {}
 
-        for prop in training_props:
+        for prop in model_inputs:
             training_criteria[prop] = {"$exists": 1}
             candidate_critera[prop] = {"$exists": 1}
-        for prop in response_props:
+        for prop in model_outputs:
             training_criteria[prop] = {"$exists": 1}
             candidate_critera[prop] = {"$exists": 0}
 
         training_data = self._dataset.query(criteria=training_criteria,
-                                            properties=)
+                                            properties=list(all_props))
         candidate_data = self._dataset.query(criteria=candidate_criteria,
-                                             properties=training_props)
+                                             properties=list(model_inputs))
         return (training_data, candidate_data)

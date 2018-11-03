@@ -14,7 +14,6 @@ class Objective(ABC):
         self._wflows = wflows
 
     @property
-    @abstractmethod
     def wflows(self):
         """
         Returns a set of workflow types that are needed for this objective
@@ -55,23 +54,26 @@ class Objective(ABC):
         pass
 
 
-class NegativePoissonObjective(Objective):
+class HighDuctilityObjective(Objective):
     """
-    Toy example of objective looking for materials with negative poisson ratios
+    Toy example of objective looking for materials with high ductility.
+    Ductility is modeled using Pugh's ratio: K/G
     """
 
     def __init__(self, model=None, wflows=None):
         self._model = model
         self._wflows = wflows
 
-    def model_training_property_names(self):
+    def model_input_property_names(self):
         return set("pretty_formula")
 
     def model_response_property_names(self):
         return set("elasticity.elastic_tensor")
 
-    def property_names(self):
-        prop_names = set()
-        for wflow in self._wflows:
-            prop_names += wflow.mpquery_properties()
-        return prop_names
+    def return_scores(self, candidates):
+        return [self.score(self._model.predict(input),
+                           self._model.prediction_variance(input))
+                for input in candidates]
+
+    def score(self, prediction, uncertainty):
+        return prediction
