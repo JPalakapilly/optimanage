@@ -1,7 +1,9 @@
-from pymatgen.ext.matproj import MPRester
+from pymatgen.ext.matproj import MPRester, MPRestError
 import json
 from monty.json import MontyEncoder, MontyDecoder
 from pymatgen import Structure
+import re
+import time
 
 try:
     from pydash import chunk as get_chunks
@@ -32,7 +34,7 @@ except ImportError:
                 self.done, self.total, self.done/self.total))
 
 
-def bulk_query(self, criteria, properties, chunk_size=100, **kwargs):
+def bulk_query(self, criteria, properties, chunk_size=50, **kwargs):
     data = []
     mids = [d["material_id"] for d in
             self.query(criteria, ["material_id"])]
@@ -43,7 +45,22 @@ def bulk_query(self, criteria, properties, chunk_size=100, **kwargs):
     for chunk in chunks:
         chunk_criteria = criteria.copy()
         chunk_criteria.update({"material_id": {"$in": chunk}})
-        data.extend(self.query(chunk_criteria, properties, **kwargs))
+        max_tries = 5
+        num_tries = 0
+        while num_tries < max_tries:
+            try:
+                data.extend(self.query(chunk_criteria, properties, **kwargs))
+                num_tries = 5
+            except MPRester as e:
+                msg = e.message
+                if e.contains("error status code"):
+                    status_code = int(re.findall("\d+", msg)[0])
+                    if status_code < 500:
+                        raise e
+                    else:
+                        num_tries += 1
+                        print("trying again")
+                        time.sleep(5)
         progress_bar.update(len(chunk))
     return data
 
@@ -78,13 +95,13 @@ def make_toy_elastic_dataset(full_dataset_filepath, toy_filepath):
     """
     with open(full_dataset_filepath) as full_data:
         with open(toy_filepath, 'w+') as toy:
-            all_data = json.load(full_data)
+            all_data = json.load(full_data, cls=MontyDecoder)
             toy_data = []
             removed_count = 0
             total_count = len(all_data)
             for data in all_data:
                 if ((int)(data['task_id'].split('-')[1])) % 2 == 0:
-                    del(data['elasticity.elastic_tensor'])
+                    del(data['elasticity']['elastic_tensor'])
                     toy_data.append(data)
                     removed_count += 1
                 else:
@@ -96,6 +113,6 @@ def make_toy_elastic_dataset(full_dataset_filepath, toy_filepath):
 
 if __name__ == "__main__":
     properties_to_query = set()
-    get_materials_with_elastic_tensors("full_elastic_dataset2.json",
+    get_materials_with_elastic_tensors("full_elastic_dataset.json",
                                        properties_to_query)
     # make_toy_elastic_dataset("full_elastic_dataset2.json", "toy_dataset2.json")
