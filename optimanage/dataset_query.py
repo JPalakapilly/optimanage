@@ -50,7 +50,7 @@ def bulk_query(self, criteria, properties, chunk_size=50, **kwargs):
         while num_tries < max_tries:
             try:
                 data.extend(self.query(chunk_criteria, properties, **kwargs))
-                num_tries = 5
+                break
             except MPRester as e:
                 msg = e.message
                 if e.contains("error status code"):
