@@ -51,9 +51,10 @@ def bulk_query(self, criteria, properties, chunk_size=50, **kwargs):
             try:
                 data.extend(self.query(chunk_criteria, properties, **kwargs))
                 break
-            except MPRester as e:
-                msg = e.message
-                if e.contains("error status code"):
+            except MPRestError as e:
+                msg = str(e)
+                print("Error encountered. Trying again")
+                if str(e).contains("error status code"):
                     status_code = int(re.findall("\d+", msg)[0])
                     if status_code < 500:
                         raise e
@@ -101,18 +102,19 @@ def make_toy_elastic_dataset(full_dataset_filepath, toy_filepath):
             total_count = len(all_data)
             for data in all_data:
                 if ((int)(data['task_id'].split('-')[1])) % 2 == 0:
-                    del(data['elasticity']['elastic_tensor'])
+                    del(data['elasticity']['G_VRH'])
+                    del(data['elasticity']['K_VRH'])
                     toy_data.append(data)
                     removed_count += 1
                 else:
                     toy_data.append(data)
             json.dump(toy_data, toy, indent=4, cls=MontyEncoder)
-            print("Removed {} elastic tensors from the full dataset {}."
+            print("Removed {} response properties (G_VRH, K_VRH) from the full dataset {}."
                   .format(removed_count, total_count))
 
 
 if __name__ == "__main__":
-    properties_to_query = set()
-    get_materials_with_elastic_tensors("full_elastic_dataset.json",
-                                       properties_to_query)
-    # make_toy_elastic_dataset("full_elastic_dataset2.json", "toy_dataset2.json")
+    #properties_to_query = set(["structure", "full_formula", "spacegroup"])
+    #get_materials_with_elastic_tensors("full_elastic_dataset.json",
+    #                                   properties_to_query)
+    #make_toy_elastic_dataset("full_elastic_dataset2.json", "toy_dataset3.json")

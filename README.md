@@ -37,3 +37,7 @@ wflows = dispatcher.rank_wflows(n=10)
 ```
 
 Then, `wflows` will be a list of 10 workflows that should be run prioritized in the order they are in the list.
+
+## State of the code Jan 19
+All classes are very incomplete.
+I've tried to complete a toy example using some data from the Materials Project. The code to grab the data is in dataset_query.py. See initial_test.py for my attempt at creating the example. Right now, the dispatcher can score candidates using an objective but it cannot sort the resulting workflows (i.e. rank_wflows() needs to be completed). If you have any questions about the code feel free to contact me at jjp126 AT berkeley DOT edu.

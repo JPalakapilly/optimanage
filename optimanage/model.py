@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.cross_validation import KFold, cross_val_score
+from sklearn.model_selection import KFold, cross_val_score
 import numpy as np
 
 
@@ -60,13 +60,13 @@ class RandomForestModel(Model):
     def __init__(self, max_depth=2, random_state=0, n_estimators=100):
         self._RFModel = RandomForestRegressor(max_depth=max_depth,
                                               random_state=random_state,
-                                              n_estimators=n_estimator)
-        self._X = []
-        self._y = []
+                                              n_estimators=n_estimators)
+        # self._X = []
+        # self._y = []
 
-    def train(self, training_data):
-        X = []
-        y = []
+    def train(self, training_input, training_response):
+        X = training_input
+        y = training_response
 
         self._RFModel.fit(X, y)
 

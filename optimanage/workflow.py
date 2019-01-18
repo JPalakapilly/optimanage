@@ -35,6 +35,15 @@ class Workflow(ABC):
         """
         return self._mp_id
 
+    def __eq__(self, other):
+        """
+        If two workflows are the same class and
+        have the same mp-id then they are equal.
+        """
+        if type(other) == type(self):
+            return self.mp_id() == other.mp_id()
+        return False
+
 
 class ElasticTensorWorkflow(Workflow):
     """
